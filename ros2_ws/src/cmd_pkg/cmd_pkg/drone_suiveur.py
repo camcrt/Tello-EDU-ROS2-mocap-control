@@ -10,6 +10,8 @@ import threading
 x_drone_maitre = y_drone_maitre = z_drone_maitre = 0.0
 x_drone_esclave = y_drone_esclave = z_drone_esclave = 0.0
 
+x_val = y_val = z_val = 0.0
+
 class Drone_suiveur(Node):
    
     
@@ -32,7 +34,7 @@ class Drone_suiveur(Node):
             10)
         self.subscription_esclave
 
-        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10) 
+        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         timer_period = 0.001  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
@@ -67,68 +69,68 @@ class Drone_suiveur(Node):
         global y_drone_esclave
         global z_drone_esclave
 
+        global x_val
+        global y_val
+        global z_val
+
+        
         cmd = Twist()
 
         def regul_x():
+            global x_val
 
             delta = 0.3
             distance = 1
 
             if distance - delta < x_drone_esclave - x_drone_maitre  < distance + delta :
-                cmd.linear.x = 0.0
-                self.publisher_.publish(cmd)
+                x_val = 0.0
                 return
 
             if x_drone_esclave - x_drone_maitre > distance + delta : 
-                cmd.linear.x = 0.5
-                self.publisher_.publish(cmd)
+                x_val = 0.5
 
             if x_drone_esclave - x_drone_maitre < distance - delta : 
-                cmd.linear.x = - 0.5
-                self.publisher_.publish(cmd)
+                x_val = -0.5
 
-            self.publisher_.publish(cmd)
+            
 
 
         def regul_y():
-
+            global y_val
+            
             delta = 0.4
             distance = 0.5
 
             if y_drone_maitre - delta  < y_drone_esclave< y_drone_maitre + delta :
-                cmd.linear.y = 0.0
-                self.publisher_.publish(cmd)
-                return
+                y_val = 0.0
 
             if y_drone_esclave> y_drone_maitre + delta : 
-                cmd.linear.y = 0.5
-                self.publisher_.publish(cmd)
+                y_val = 0.5
 
             if y_drone_esclave< y_drone_maitre - delta : 
-                cmd.linear.y = -0.5
-                self.publisher_.publish(cmd)
+                y_val = -0.5
 
-    
+            
 
         def regul_z():
+            global z_val
 
             delta = 0.1
 
             if z_drone_maitre - delta < z_drone_esclave < z_drone_maitre + delta : 
-                cmd.linear.z = 0.0
-                self.publisher_.publish(cmd)
-                return
+                z_val = 0.0
 
             if z_drone_esclave < z_drone_maitre - delta : 
-                cmd.linear.z = 0.5
-                self.publisher_.publish(cmd)
+                z_val = 0.5
 
             if z_drone_esclave > z_drone_maitre + delta: 
-                cmd.linear.z = -0.5
-                self.publisher_.publish(cmd)
+                z_val = -0.5
 
-            self.publisher_.publish(cmd)
-    
+        cmd.linear.x = x_val
+        cmd.linear.y = y_val
+        cmd.linear.z = z_val
+
+        self.publisher_.publish(cmd)
     
         t1 = threading.Thread(target=regul_x)
         t2 = threading.Thread(target=regul_y)
