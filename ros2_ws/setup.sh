@@ -4,14 +4,13 @@ sudo apt install libasio-dev
 sudo apt install ros-foxy-cv-bridge ros-foxy-camera-calibration-parsers
 
 cd src/
-#Tello driver installation
+#Tello driver dependencies
 
 pip3 install catkin_pkg rospkg av image opencv-python djitellopy2 pyyaml
 sudo apt install python3-tf*
 sudo apt install ros-foxy-ament-cmake* ros-foxy-tf2* ros-foxy-rclcpp* ros-foxy-rosgraph*
 sudo apt install ros-foxy-rviz* ros-foxy-rqt*
 
-git clone https://github.com/tentone/tello-ros2.git
 
 # #regulation and tools package
 # git clone https://github.com/camcrt/cmd_pkg.git
