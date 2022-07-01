@@ -1,0 +1,5 @@
+<launch>
+  <node name="regul_X" pkg="tstTello" type="regul_X.py" output="screen"/>
+  <node name="regul_Y" pkg="tstTello" type="regul_Y.py" output="screen"/>
+  <node name="regul_Z" pkg="tstTello" type="regul_Z.py" output="screen"/>
+</launch>

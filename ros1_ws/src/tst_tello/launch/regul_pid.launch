@@ -1,0 +1,5 @@
+<launch>
+  <node name="regul_X_PID" pkg="tstTello" type="regul_X_PID.py" output="screen"/>
+  <node name="regul_Y_PID" pkg="tstTello" type="regul_Y_PID.py" output="screen"/>
+  <node name="regul_Z_PID" pkg="tstTello" type="regul_Z_PID.py" output="screen"/>
+</launch>
